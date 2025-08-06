@@ -1,0 +1,110 @@
+[
+  {
+    "reference_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "How many visitors did we have onsite in the last 3 weeks?"
+        }
+      }
+    ],
+    "predicted_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "How many visitors did we have onsite in the last 3 weeks?"
+        }
+      }
+    ]
+  },
+  {
+    "reference_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "Did multiday anons on Games use the app or web more in the last week?"
+        }
+      }
+    ],
+    "predicted_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "Did multiday anons on Games use the app or web more in the last week?"
+        }
+      }
+    ]
+  },
+  {
+    "reference_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "How many onsite users who moved between regi and sub in the week were All Access subscribers?"
+        }
+      }
+    ],
+    "predicted_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "How many onsite users who moved between regi and sub in the week were All Access subscribers?"
+        }
+      }
+    ]
+  },
+  {
+    "reference_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "In the last week, what volume of Games-only subscribers came from each payer type option?"
+        }
+      }
+    ],
+    "predicted_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "In the last week, what volume of Games-only subscribers came from each payer type option?"
+        }
+      }
+    ]
+  },
+  {
+    "reference_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "For 2024–present, does the % of All Access subscribers who reach 2+ products visited in the week appear higher domestically or internationally?"
+        }
+      }
+    ],
+    "predicted_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "For 2024–present, does the % of All Access subscribers who reach 2+ products visited in the week appear higher domestically or internationally?"
+        }
+      }
+    ]
+  },
+  {
+    "reference_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "Are multiday News regis who come through NYT-owned channels in the week more or less likely to use multiple channels?"
+        }
+      }
+    ],
+    "predicted_trajectory": [
+      {
+        "tool_name": "call_db_agent",
+        "tool_input": {
+          "question": "Are multiday News regis who come through NYT-owned channels in the week more or less likely to use multiple channels?"
+        }
+      }
+    ]
+  }
+] 

@@ -1,0 +1,124 @@
+Level,Question,,,Query,,,,Answer,
+Easy,How many visitors did we have onsite in the last 3 weeks?,,,"SELECT
+  report_starts,
+  sum(users)
+FROM
+  `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+WHERE
+  report_starts >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 3 WEEK), WEEK(Monday))
+  AND product = 'enterprise'
+GROUP BY ALL
+ORDER BY 1",,,,,1. Term definitions
+Easy,Did multiday anons on Games use the app or web more in the last week?,,,"SELECT
+  report_starts,
+  SUM(CASE WHEN is_web_visitor THEN users ELSE 0 END) as web_wau,
+  SUM(CASE WHEN is_app_visitor THEN users ELSE 0 END) as app_wau
+FROM
+  `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+WHERE
+  report_starts >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 1 WEEK), week(Monday))
+  AND product = 'games'
+  AND is_anon
+  AND active_days_on_product > 1
+GROUP BY ALL",,,,,
+Medium,How many onsite users who moved between regi and sub in the week were All Access subscribers?,,,"SELECT
+  report_starts,
+  SUM(users) as wau
+FROM
+  `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+WHERE
+  report_starts = DATE_SUB(DATE_TRUNC(CURRENT_DATE(), week(Monday)), INTERVAL 1 WEEK)
+  AND product = 'enterprise'
+  AND is_regi 
+  AND is_sub 
+  AND is_all_access_sub
+GROUP BY ALL",,,,,
+Medium,"In the last week, what volume of Games-only subscribers came from each payer type option?",,,"SELECT
+  report_starts,
+  CASE
+    WHEN is_1p_to_product THEN '1p'
+    WHEN is_3p_to_product THEN '3p'
+    WHEN is_subscription_share_to_product THEN 'subscription share'
+    WHEN is_gift_redeemer_to_product THEN 'gift redeemer'
+    WHEN is_family_plan_to_product THEN 'family plan'
+    WHEN is_b2b_to_product THEN 'b2b'
+    ELSE 'other'
+  END as payer_type,
+  sum(users) as wau
+FROM
+  `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+WHERE
+  report_starts = DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 1 WEEK), week(Monday))
+  AND product = 'games'
+  AND is_sub
+  AND is_games_only_sub
+GROUP BY ALL 
+ORDER BY 1, 2",,,,,
+Hard,"For 2024–present, does the % of All Access subscribers who reach 2+ products visited in the week appear higher domestically or internationally?",,,"WITH 
+
+with_products_visited AS (
+  SELECT
+    report_starts,
+    CASE
+      WHEN num_products_visited_total >= 2 THEN '2+'
+      ELSE '< 2'
+    END as products_visited,
+    SUM(CASE WHEN is_domestic THEN users ELSE 0 END) as domestic_aa,
+    SUM(CASE WHEN is_international THEN users ELSE 0 END) as intl_aa,
+  FROM
+    `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+  WHERE
+    report_starts >= '2024-01-01'
+    AND product = 'enterprise'
+    AND is_all_access_sub
+  GROUP BY ALL
+), 
+
+weekly_totals AS (
+  SELECT
+    report_starts,
+    SUM(CASE WHEN is_domestic THEN users ELSE 0 END) as domestic_aa_ttl,
+    SUM(CASE WHEN is_international THEN users ELSE 0 END) as intl_aa_ttl,
+  FROM
+    `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+  WHERE
+    report_starts >= '2024-01-01'
+    AND product = 'enterprise'
+    AND is_all_access_sub
+  GROUP BY ALL
+)
+
+SELECT
+  report_starts,
+  products_visited,
+  domestic_aa / domestic_aa_ttl as domestic_pct,
+  intl_aa / intl_aa_ttl as international_pct
+FROM
+  with_products_visited
+LEFT JOIN
+  weekly_totals
+USING (report_starts)
+ORDER BY 1, 2",,,,,
+Hard,Are multiday News regis who come through NYT-owned channels in the week more or less likely to use multiple channels?,,,"SELECT
+  report_starts,
+  (
+    CAST(is_direct_to_content_visitor AS INT) + 
+    CAST(is_direct_to_home_visitor AS INT) + 
+    CAST(is_direct_to_other_visitor AS INT) + 
+    CAST(is_email_visitor AS INT) +
+    CAST(is_search_to_home_visitor AS INT) +
+    CAST(is_search_visitor AS INT) + 
+    CAST(is_social_visitor AS INT) + 
+    CAST(is_notification_visitor AS INT)
+  ) > 1 as is_multi_channel_visitor,
+  sum(users) as wau
+FROM
+  `enterprise-reporting-prd.prd_metrics.weekly_active_users_agg_vw`
+WHERE
+  report_starts >= '2025-01-06'
+  AND product = 'core'
+  AND active_days_on_product > 1
+  AND is_regi
+  AND is_nyt_prompted_visitor
+GROUP BY ALL
+ORDER BY 1, 2",,,,,
