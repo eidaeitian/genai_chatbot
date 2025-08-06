@@ -1,7 +1,7 @@
 
 # RAG Chatbot (v1.4)
 
-A simple Retrieval-Augmented Generation (RAG) chatbot using OpenAI API and ChromaDB for document-augmented conversations. We plan to migrate to GCP infrastructure in the next phase.
+A simple Retrieval-Augmented Generation (RAG) chatbot using Gemini API and ChromaDB for document-augmented conversations. We plan to migrate to GCP infrastructure in the next phase.
 
 ---
 
@@ -12,9 +12,10 @@ A simple Retrieval-Augmented Generation (RAG) chatbot using OpenAI API and Chrom
 Edit the `config.py` file and set your API credentials:
 
 ```python
-OPENAI_API_KEY = "your-api-key"
-EMBED_MODEL = "text-embedding-ada-002"
-LLM_MODEL = "gpt-4"
+GOOGLE_API_KEY = "your gemini key"
+EMBED_MODEL = "models/embedding-001"
+LLM_MODEL = "gemini-2.5-flash"
+
 ```
 
 Alternatively, you can use a `.env` file:
