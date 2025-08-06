@@ -21,7 +21,7 @@ LLM_MODEL = "gemini-2.5-flash"
 Alternatively, you can use a `.env` file:
 
 ```env
-OPENAI_API_KEY=your-api-key
+GOOGLE_API_KEY=your-api-key
 ```
 
 ---
